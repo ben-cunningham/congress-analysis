@@ -30,10 +30,8 @@ def get_tweet_history(handle):
     return tweets
 
 def get_tweets(df):
-    tweets = []
     for i, row in df.iterrows():
         hist = get_tweet_history(row.Handle)
-        tweets.extend(hist)
 
         global politician_count
         politician_count += 1
@@ -43,7 +41,8 @@ def get_tweets(df):
         print("Politician Count: " +str(politician_count))
         print("Tweet Count: " +str(tweet_count))
 
-    return tweets
+        df = pd.DataFrame(hist, columns=['username', 'tweet_id', 'congressman'])
+        df.to_csv('data.csv', mode='a', index=False, header=False) 
 
 def collect_data():
     tweets = []
@@ -53,8 +52,5 @@ def collect_data():
     sens = pd.read_csv('senators.csv')
     tweets.extend(get_tweets(sens))
     
-    return pd.DataFrame(tweets, columns=['username', 'tweet_id', 'congressman'])
-
 if __name__ == '__main__':
-    data = collect_data()
-    data.to_csv('data.csv', index=False)
+    collect_data()
