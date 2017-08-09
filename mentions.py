@@ -3,12 +3,25 @@ import os
 import pandas as pd
 import got
 
+politician_count = 0
+tweet_count = 0
+
 def get_tweet_history(handle):
     if handle == None  or len(handle) <= 1:
         return []
 
     criteria = got.manager.TweetCriteria().setQuerySearch(handle).setSince("2016-05-01")
-    results = got.manager.TweetManager.getTweets(criteria)
+    count = 5
+    results = []
+    while count > 0:
+        try:
+            results = got.manager.TweetManager.getTweets(criteria)
+            break
+        except:
+            count -= 1
+    
+    if len(results) == 0:
+        return []
     
     tweets = []
     for tweet in results:
@@ -19,7 +32,16 @@ def get_tweet_history(handle):
 def get_tweets(df):
     tweets = []
     for i, row in df.iterrows():
-        tweets.extend(get_tweet_history(row.Handle))
+        hist = get_tweet_history(row.Handle)
+        tweets.extend(hist)
+
+        global politician_count
+        politician_count += 1
+        global tweet_count
+        tweet_count += len(hist)
+
+        print("Politician Count: " +str(politician_count))
+        print("Tweet Count: " +str(tweet_count))
 
     return tweets
 
