@@ -32,8 +32,6 @@ def get_tweet_history(handle):
 
 def get_tweets(df):
     for i, row in df.iterrows():
-        if i < 36:
-            continue
         hist = get_tweet_history(row.Handle)
 
         global politician_count
@@ -50,7 +48,7 @@ def get_tweets(df):
 def collect_data():
     tweets = []
     reps = pd.read_csv('representatives.csv')
-    tweets.extend(get_tweets(reps))
+    # tweets.extend(get_tweets(reps))
 
     sens = pd.read_csv('senators.csv')
     tweets.extend(get_tweets(sens))
