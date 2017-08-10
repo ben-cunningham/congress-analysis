@@ -7,14 +7,15 @@ politician_count = 0
 tweet_count = 0
 
 def get_tweet_history(handle):
-    if handle == None  or len(handle) <= 1:
+    if handle == None  or len(str(handle)) <= 1:
         return []
 
-    criteria = got.manager.TweetCriteria().setQuerySearch(handle).setSince("2016-05-01")
+    criteria = got.manager.TweetCriteria().setQuerySearch(handle).setSince("2016-07-01")
     count = 5
     results = []
     while count > 0:
         try:
+            print("Getting results for " +handle +"...")
             results = got.manager.TweetManager.getTweets(criteria)
             break
         except:
@@ -31,6 +32,8 @@ def get_tweet_history(handle):
 
 def get_tweets(df):
     for i, row in df.iterrows():
+        if i < 36:
+            continue
         hist = get_tweet_history(row.Handle)
 
         global politician_count
