@@ -48,10 +48,10 @@ def get_tweets(df):
 def collect_data():
     tweets = []
     reps = pd.read_csv('representatives.csv')
-    # tweets.extend(get_tweets(reps))
+    get_tweets(reps)
 
     sens = pd.read_csv('senators.csv')
-    tweets.extend(get_tweets(sens))
+    get_tweets(sens)
     
 if __name__ == '__main__':
     collect_data()
