@@ -39,7 +39,13 @@ def process_and_clean(text):
     return text
 
 def get_tweet(row):
-    result = api.GetStatus(row['status_id'])
+    result = None
+    try:
+        result = api.GetStatus(row['status_id'])
+    except:
+        print "Could not get results for " +row['name']
+        return
+
     text = process_and_clean(result.text).encode('utf-8')
     tweet_row = [[row['name'], str(row['status_id']), row['to'], text]]
     # print tweet_row
