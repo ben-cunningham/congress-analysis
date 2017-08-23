@@ -9,6 +9,12 @@ consumer_secret = os.environ['TWTTR_CONSUMER_SECRET']
 access_token = os.environ['TWTTR_ACCESS_KEY']
 access_secret = os.environ['TWTTR_ACCESS_SECRET']
 
+api = twitter.Api(consumer_key=consumer_key,
+                        consumer_secret=consumer_secret,
+                        access_token_key=access_token,
+                        access_token_secret=access_secret,
+                        sleep_on_rate_limit=True)
+
 def process_and_clean(text):
     # get rid of newlines
     text = text.strip().replace("\n", " ").replace("\r", " ")
@@ -33,11 +39,6 @@ def process_and_clean(text):
     return text
 
 def get_tweet(row):
-    api = twitter.Api(consumer_key=consumer_key,
-                        consumer_secret=consumer_secret,
-                        access_token_key=access_token,
-                        access_token_secret=access_secret)
-
     result = api.GetStatus(row['status_id'])
     text = process_and_clean(result.text).encode('utf-8')
     tweet_row = [[row['name'], str(row['status_id']), row['to'], text]]
