@@ -3,24 +3,24 @@ import pandas as pd
 tweets = {}
 
 def load_tweets(file_name):
-    df = pd.read_csv(file_name, nrows=100)
+    df = pd.read_csv(file_name)
     
     for index, row in df.iterrows():
         if row.isnull().values.any():
             continue
-        if row['to'] not in tweets:
-            tweets[row['to']] = []
+        if row['to'].strip() not in tweets:
+            tweets[row['to'].strip()] = []
         tweet = {}
         tweet['id'] = row['uid'],
         tweet['from'] = row['name'],
         tweet['text'] = row['tweet']
-        tweets[row['to']].append(tweet)
+        tweets[row['to'].strip()].append(tweet)
 
 def count_tweets():
     data = []
     for key, value in tweets.iteritems():
         cnt = len(value)
-        
+
         avg_len = 0
         engagers = set()
         for tweet in value:
